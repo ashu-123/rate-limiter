@@ -4,6 +4,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
 import redis.clients.jedis.args.ExpiryOption;
 
+/** This class implements a fixed window size rate limiting algorithm using Jedis.*/
 public class FixedWindowRateLimiter {
 
     private final Jedis jedis;
@@ -16,6 +17,12 @@ public class FixedWindowRateLimiter {
         this.limit = limit;
     }
 
+    /**
+     * Checks if a client is within their allowed request limit.
+     * If yes, the request is allowed and the counter is updated. If not, the request is blocked.
+     * @param clientId the unique id of the client
+     * @return True if request is allowed. False if not.
+     */
     public boolean isAllowed(String clientId) {
         String key = "rate-limit: " + clientId;
 
